@@ -671,14 +671,16 @@ EOS
 
 function! PHCursorHold()
     " only python is supported {{{
-    if (!exists('b:current_syntax') || (b:current_syntax != 'python'))
+    if (exists('b:current_syntax') && ((b:current_syntax != 'python') || (b:current_syntax != 'pymode')))
+	" call python function findTag() with the current buffer number and changed ticks
+	execute 'python findTag(' . expand("<abuf>") . ', ' . b:changedtick . ')'
+    else
 	let w:PHStatusLine = ''
-	return
     endif
+
+    return
     " }}}
     
-    " call python function findTag() with the current buffer number and changed ticks
-    execute 'python findTag(' . expand("<abuf>") . ', ' . b:changedtick . ')'
 endfunction
 
 
